@@ -15,6 +15,12 @@ export interface Job {
 }
 
 const URL = "http://localhost:3000/jobs";
+// Exercice 1: Rajout du header 'Authorization' valant "ubiquid"
+const options: RequestInit = {
+  headers: {
+    "Authorization": "ubiquid"
+  }
+}
 
 export const useJobs = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -24,7 +30,7 @@ export const useJobs = () => {
 
   useEffect(() => {
     const getJobs = async () => {
-      const response = await fetch(URL);
+      const response = await fetch(URL, options);
 
       if (!response.ok) {
         setError("Erreur de connexion au serveur.");
@@ -60,8 +66,11 @@ export const useJobs = () => {
           ? a.type.localeCompare(b.type)
           : b.type.localeCompare(a.type);
       }
+      // Exercice 2: L'implémentation du code de tri des dates de créations était manquantes
       case "createdAt": {
-        return 1;
+        return sortOrder === "asc"
+          ? a.createdAt.localeCompare(b.createdAt)
+          : b.createdAt.localeCompare(a.createdAt);
       }
     }
   };
