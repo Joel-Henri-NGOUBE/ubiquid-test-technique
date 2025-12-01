@@ -4,6 +4,7 @@ import { useJobs } from "../../hooks/useJobs";
 import styles from "./List.module.css";
 import Sort from "./Sort/Sort";
 import InputSearch from "../../components/InputSearch";
+import { Link } from "react-router";
 
 const JobList: FC = () => {
   const { jobs, setJobs, error, setSortBy, setSortOrder, sortBy, sortOrder, searchItem, setSearchItem } = useJobs();
@@ -24,9 +25,9 @@ const JobList: FC = () => {
             sortBy={sortBy}
             sortOrder={sortOrder}
           />
-          {jobs.map((job) => (
-            <JobCard job={job} key={job.uuid} />
-          ))}
+          {jobs.map((job) => <Link to={`/set-job/${job.uuid}`} key={job.uuid}>
+            <JobCard job={job}  />
+          </Link>)}
         </>
       )}
       {jobs.length === 0 && (

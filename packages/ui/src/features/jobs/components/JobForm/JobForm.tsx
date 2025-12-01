@@ -1,6 +1,7 @@
 import type { FC } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./JobForm.module.css";
+import type { Job } from "../../hooks/useJobs";
 
 interface JobFormProps {
   onSubmit: ({
@@ -14,13 +15,39 @@ interface JobFormProps {
     salary: string;
     type: string;
   }) => void;
+  uuid: string | undefined
 }
 
-const JobForm: FC<JobFormProps> = ({ onSubmit }) => {
+const JobForm: FC<JobFormProps> = ({ onSubmit, uuid }) => {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("sales");
   const [salary, setSalary] = useState("");
   const [type, setType] = useState("cdi");
+
+  useEffect(() => {
+    const getJobToSet: () => void = () => {
+  
+      fetch(`http://localhost:3000/jobs/${uuid}`, {
+        method: "GET",
+        headers: {
+          "Authorization": "ubiquid",
+        },
+      }).then((response) => {
+        if (!response.ok) {
+          response.json().then((r) => console.log(r.message));
+        } else {
+          response.json().then((r: Job[]) => {
+            setTitle(r[0].title)
+            setCategory(r[0].category)
+            r[0].salary && setSalary(r[0].salary.toString())
+            setType(r[0].type)
+          });
+        }
+      });
+    };
+
+    getJobToSet()
+  }, [])
 
   const handleSubmit = () => {
     onSubmit({ title, category, salary, type });
