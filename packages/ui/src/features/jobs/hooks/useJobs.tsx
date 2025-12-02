@@ -79,7 +79,7 @@ export const useJobs = () => {
   };
 
   return {
-    jobs: jobs.sort(sortFn),
+    jobs: (searchItem ? searchResult : jobs).sort(sortFn),
     setJobs: setJobs,
     error,
     sortBy,
