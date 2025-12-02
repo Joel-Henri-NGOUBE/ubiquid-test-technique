@@ -28,6 +28,7 @@ export const useJobs = () => {
   const [sortBy, setSortBy] = useState<SortByT>("title");
   const [sortOrder, setSortOrder] = useState<SortOrderT>("asc");
   const [searchItem, setSearchItem] = useState<string>("")
+  const [searchResult, setSearchResult] = useState<Job[]>([]);
 
   useEffect(() => {
     const getJobs = async () => {
@@ -40,6 +41,7 @@ export const useJobs = () => {
       const data = await response.json();
 
       setJobs(data);
+      setSearchResult(data);
     };
 
     getJobs();
@@ -85,6 +87,8 @@ export const useJobs = () => {
     sortOrder,
     setSortOrder,
     searchItem,
-    setSearchItem
+    setSearchItem,
+    searchResult,
+    setSearchResult
   };
 };

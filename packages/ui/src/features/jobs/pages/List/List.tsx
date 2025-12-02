@@ -7,17 +7,20 @@ import InputSearch from "../../components/InputSearch";
 import { Link } from "react-router";
 
 const JobList: FC = () => {
-  const { jobs, setJobs, error, setSortBy, setSortOrder, sortBy, sortOrder, searchItem, setSearchItem } = useJobs();
+  const { jobs, setJobs, error, setSortBy, setSortOrder, sortBy, sortOrder, searchItem, setSearchItem, searchResult, setSearchResult } = useJobs();
 
   return (
     <div className={styles.container}>
       {error && <div className={styles.error}>⚠️ {error}</div>}
-      <InputSearch 
+      <InputSearch
+        jobs={jobs}
+        searchResult={searchResult}
+        setSearchResult={setSearchResult}
         setJobs={setJobs}
         searchItem={searchItem}
         setSearchItem={setSearchItem}
       />
-      {jobs && (
+      {(searchItem ? searchResult : jobs) && (
         <>
           <Sort
             setSortBy={setSortBy}
@@ -25,7 +28,7 @@ const JobList: FC = () => {
             sortBy={sortBy}
             sortOrder={sortOrder}
           />
-          {jobs.map((job) => <Link to={`/set-job/${job.uuid}`} key={job.uuid}>
+          {(searchItem ? searchResult : jobs).map((job) => <Link to={`/set-job/${job.uuid}`} key={job.uuid}>
             <JobCard job={job}  />
           </Link>)}
         </>
