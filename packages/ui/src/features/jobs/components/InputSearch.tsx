@@ -9,7 +9,7 @@ interface InputSearchProp{
     searchResult: Job[],
     setSearchResult: Dispatch<SetStateAction<Job[]>>,
 }
-export default function InputSearch({jobs, setJobs, searchItem ,setSearchItem, searchResult, setSearchResult}: InputSearchProp){
+export default function InputSearch({jobs, searchItem ,setSearchItem, setSearchResult}: InputSearchProp){
     function handleSearchItem(e: ChangeEvent<HTMLInputElement>, jobs: Job[]){
         const targetValue = e?.target?.value
         console.log(targetValue)
